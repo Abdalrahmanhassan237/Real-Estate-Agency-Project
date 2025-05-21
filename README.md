@@ -160,5 +160,3 @@ A fully deployed **cloud + AI + BI** solution that enables:
 * Ready for production and competition demos
 
 ---
-
-هل تحب أقدمه لك كـ PDF أو أضيفه على GitHub Repo بشكل منسق؟
