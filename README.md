@@ -1,35 +1,70 @@
-# 🏡 Real Estate Price Prediction Dashboard (2030 Forecast)
+
+# 🏡 Real Estate Price Prediction Dashboard (2030 Forecast) + Azure Cloud Deployment
 
 ## 📌 Overview
 
-This project leverages **Machine Learning** to predict **real estate property prices up to the year 2030** using historical data retrieved from an SQL Server database. The predictions are visualized in a Power BI dashboard to support **data-driven decision-making** for investors, agents, and property developers.
+This project provides a **full cloud-based machine learning pipeline** to forecast **real estate prices up to 2030**, hosted and powered via **Azure SQL Database** and visualized using **Power BI**.
+
+It includes:
+
+* Scalable and secure Azure SQL Database deployment.
+* Data migration from on-prem to Azure using `.bacpac`.
+* ML-powered price prediction using `RandomForestRegressor`.
+* Seamless integration with Power BI for visualization.
+
+---
 
 ## 🎯 Project Objective
 
-The primary goal is to build an end-to-end pipeline that:
+The system is designed to:
 
-* Connects to a real estate SQL Server database.
-* Preprocesses and engineers relevant features (e.g., size, location, visit popularity).
-* Trains a **Random Forest Regressor** model to predict property prices.
-* Generates yearly price predictions until **2030** based on projected visit growth.
-* Outputs results in a CSV format for integration with **Power BI**.
-* Provides a visualization plot as a reference for price trends across locations and property types.
+* Host real estate data on Azure SQL securely.
+* Predict future prices using ML based on visits, property size, and location.
+* Automate data flow from Azure to Power BI.
+* Support investors, agencies, and stakeholders with dynamic forecasting tools.
+
+---
+
+## ☁️ Azure Cloud Infrastructure
+
+
+
+### 🔐 Security & Access
+
+* ✅ Whitelisted all team client IPs
+* ✅ Enabled "Allow Azure services to access this server"
+* 🔒 Enforced TLS 1.2
+* 🔐 Transparent Data Encryption (TDE): Enabled
+
+### 🗃️ Data Migration (Free Method)
+
+* Used `.bacpac` export/import method via SSMS:
+
+  * Export from local → Import to Azure SQL
+* Validated schema and row-level data using checksum queries
+* Backup handled automatically by Azure
+
+### 📉 Cost Optimization
+
+* Used **Serverless** mode with auto-pause (1 hour idle)
+* Backup: Locally-redundant to reduce storage cost
+* Budget Monitoring: Azure Cost Management
 
 ---
 
 ## 🧠 AI/ML Model Used
 
 * **Model**: `RandomForestRegressor`
-* **Pipeline**: Includes both categorical encoding (OneHotEncoder) and numerical scaling (StandardScaler).
-* **Evaluation Metrics**:
+* **Pipeline**: OneHotEncoder + StandardScaler
+* **Evaluation**:
 
-  * **Mean Squared Error (MSE)**
-  * **R² Score**
-* **Features Used**:
+  * R² Score
+  * Mean Squared Error
+* **Features**:
 
-  * PropertyType (Categorical)
-  * Location (Categorical)
-  * Size in square meters
+  * Property Type
+  * Location
+  * Size (sqm)
   * Visit Count
   * Visit Popularity Score (VisitCount / Size)
 
@@ -37,66 +72,93 @@ The primary goal is to build an end-to-end pipeline that:
 
 ## 🔄 Data Pipeline
 
-1. **Data Source**: `SQL Server (RealEstateAgency)`
-2. **Preprocessing**:
+1. **Source**: Azure SQL Database (`realestate_db`)
+2. **ETL**:
 
-   * Missing value handling
-   * Feature engineering (PricePerSqm, VisitPopularity)
-3. **Model Training**:
+   * Feature engineering (`VisitPopularity`, `PricePerSqm`)
+   * Missing value imputation
+3. **Training & Prediction**:
 
-   * Feature-target split
-   * Training with `train_test_split`
-   * Model persistence using `joblib`
-4. **Prediction Generation**:
+   * Split data → Train model → Save model
+   * Generate forecast until 2030 (5% visit growth assumed)
+4. **Output**:
 
-   * Forecasts for up to 5 years (customizable)
-   * Assumes 5% visit growth annually
-   * Outputs: `property_price_predictions.csv`
-5. **Visualization**:
-
-   * Plots yearly price trends per property type and location
-   * File output: `price_predictions.png`
+   * `property_price_predictions.csv`
+   * `price_predictions.png` (trend plot)
 
 ---
 
 ## 📊 Power BI Integration
 
-* Load `property_price_predictions.csv` into Power BI.
-* Use filters for `Year`, `PropertyType`, and `Location` to analyze price trends.
-* Create interactive visuals like:
+* Data Source: `property_price_predictions.csv`
+* Visuals:
 
-  * Line charts for price forecasts
-  * Maps showing predicted property values by area
-  * KPI cards to monitor yearly changes
+  * Forecast line chart per year/location/type
+  * Area-based pricing map
+  * KPI cards for annual trends
+* Filter options: `Year`, `PropertyType`, `Location`
 
 ---
 
-## 🔧 How to Run
+## 💻 How to Run
 
 ```bash
 python property_prediction.py
 ```
 
-This will:
+Generates:
 
-* Train and save the AI model (`property_price_model.pkl`)
-* Generate prediction CSV for Power BI
-* Create a visualization PNG as a backup
-
----
-
-## 🗂 Files Generated
-
-* `property_price_model.pkl`: Trained AI model
-* `property_price_predictions.csv`: Forecasted prices for Power BI
-* `price_predictions.png`: Optional plot for quick validation
+* Trained ML model: `property_price_model.pkl`
+* Forecast CSV: `property_price_predictions.csv`
+* Visualization: `price_predictions.png`
 
 ---
 
-## 🧩 Future Improvements
+## 📁 Project File Summary
 
-* Add real-world market growth rate data for better accuracy
-* Integrate live property listings via API
-* Enhance the model with more features (e.g., neighborhood rating, amenities)
-* Schedule daily or monthly updates via a scheduler (e.g., Airflow or Task Scheduler)
+| File                             | Description           |
+| -------------------------------- | --------------------- |
+| `property_prediction.py`         | Core ML script        |
+| `property_price_model.pkl`       | Trained model         |
+| `property_price_predictions.csv` | Output for Power BI   |
+| `price_predictions.png`          | Visual chart          |
+| `README.md`                      | Project documentation |
 
+---
+
+## 🔮 Future Work
+
+* Integrate real market growth data (from APIs)
+* Schedule model retraining (via Azure Functions / Airflow)
+* Add more features: crime rate, amenities, neighborhood score
+* Deploy model via Azure ML or FastAPI for real-time inference
+
+---
+
+## ✅ Completion Checklist
+
+| Task                           | Status |
+| ------------------------------ | ------ |
+| Azure SQL Server Setup         | ✅      |
+| Database & Firewall Configured | ✅      |
+| Bacpac Migration (Free Method) | ✅      |
+| AI Model Training              | ✅      |
+| Predictions Until 2030         | ✅      |
+| Power BI Integration           | ✅      |
+| Budget Optimization            | ✅      |
+| Failover & Backup Setup        | ✅      |
+
+---
+
+## 🏁 Final Result
+
+A fully deployed **cloud + AI + BI** solution that enables:
+
+* Real-time decision-making
+* Scalable performance
+* Affordable and automated predictions
+* Ready for production and competition demos
+
+---
+
+هل تحب أقدمه لك كـ PDF أو أضيفه على GitHub Repo بشكل منسق؟
