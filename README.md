@@ -311,7 +311,7 @@ Get RealEstate Pro running locally in just a few steps:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/username/realestate-pro.git
+git clone https://github.com/Abdalrahmanhassan237/Real-Estate-Agency-Project.git
 cd realestate-pro
 
 # 2. Install dependencies
@@ -411,7 +411,7 @@ npm run dev
 
 ```bash
 # Clone the repository
-git clone https://github.com/username/realestate-pro.git
+git clone https://github.com/Abdalrahmanhassan237/Real-Estate-Agency-Project.git
 cd realestate-pro
 
 # Install dependencies
