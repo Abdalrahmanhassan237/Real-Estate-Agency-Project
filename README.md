@@ -1,5 +1,6 @@
 
 # 🏡 Real Estate Price Prediction Dashboard (2030 Forecast) + Azure Cloud Deployment
+![Bug Hunters Team_banner](https://github.com/user-attachments/assets/19c82c8e-b7f0-412c-8ed1-1ffb4137c1e5)
 
 ## 📌 Overview
 
